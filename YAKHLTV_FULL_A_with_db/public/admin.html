@@ -1,0 +1,12 @@
+
+<!doctype html><html lang="ru"><head><meta charset="utf-8"/></head><body>
+<h1>Admin Panel</h1>
+<div><button onclick="logout()">Logout</button></div>
+<div id="app"></div>
+<script>
+async function fetchAuth(path, opts){ const token = localStorage.getItem('yak_token'); const headers = {'Content-Type':'application/json'}; if(token) headers.Authorization = 'Bearer '+token; const r = await fetch('/api/'+path, { headers, ...opts }); return r.json(); }
+async function load(){ const teams = await fetchAuth('teams'); document.getElementById('app').innerHTML = '<h2>Teams</h2>'+teams.map(t=>'<div>'+t.name+' <button onclick="del(\''+t.id+'\')">Del</button></div>').join(''); }
+async function del(id){ await fetchAuth('teams/'+id, { method:'DELETE' }); load(); }
+function logout(){ localStorage.removeItem('yak_token'); location.href='/public/index.html'; }
+load();
+</script></body></html>

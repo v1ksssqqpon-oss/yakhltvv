@@ -1,0 +1,58 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String?  @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id      String   @id @default(cuid())
+  name    String   @unique
+  country String?
+  players Player[]
+  createdAt DateTime @default(now())
+}
+
+model Player {
+  id     String @id @default(cuid())
+  name   String
+  teamId String?
+  team   Team?  @relation(fields:[teamId], references:[id])
+  rating Float  @default(1.0)
+  avatar String?
+  createdAt DateTime @default(now())
+}
+
+model Tournament {
+  id      String @id @default(cuid())
+  name    String
+  date    DateTime?
+  format  String  @default("single")
+  teams   String? // JSON string array
+  createdAt DateTime @default(now())
+}
+
+model Match {
+  id           String  @id @default(cuid())
+  tournamentId String?
+  tournament   Tournament? @relation(fields:[tournamentId], references:[id])
+  team1        String
+  team2        String
+  time         DateTime?
+  stage        String?
+  status       String  @default("TBD")
+  score        String?
+  maps         String? // JSON
+  createdAt DateTime @default(now())
+}

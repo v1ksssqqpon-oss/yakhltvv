@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: yakhltv-api
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_PASS
+        value: yakyakhltvbyv
+      - key: JWT_SECRET
+        value: change_this_secret
+      - key: DATABASE_URL
+        value: "postgresql://yakhltv_user:OO7LjWEoHiUs3EDpDGjYI4k3sBRn0vZf@dpg-d4que5a4d50c73chnap0-a.virginia-postgres.render.com/yakhltv"
+databases: []
